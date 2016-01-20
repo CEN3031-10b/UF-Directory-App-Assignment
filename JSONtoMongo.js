@@ -12,6 +12,9 @@ var fs = require('fs'),
 /* Connect to your database */
 mongoose.connect(config.db.uri);
 
+// remove everything currently in the database
+Listing.find({}).remove().exec();
+
 /* 
   Instantiate a mongoose model for each listing object in the JSON file, 
   and then save it to your Mongo database 

@@ -12,9 +12,14 @@ var findLibraryWest = function() {
    */
    
 	Listing.find({name:"Library West"}, function(err, listing){
-		if(err) throw err;
+		console.log("-----------------findLibraryWest()-----------------");
+		if(err){
+			console.log(err);
+			return;
+		}
+		
 		console.log(listing);
-   });
+	});
 };
 var removeCable = function() {
   /*
@@ -23,28 +28,50 @@ var removeCable = function() {
     and remove this listing from your database and log the document to the console. 
    */
    
-   Listing.find({code:"CABL"}).remove().exec(function(err){
-	   if(err) throw err;
-   });
+   Listing.findOneAndRemove({code:"CABL"}, function(err, listing){
+	   console.log("-----------------removeCable()-----------------");
+		if(err){
+			console.log(err);
+			return;
+		}
+		if(!listing){
+			console.log("No listing with code = 'CABL' found");
+		}
+		else{
+			console.log(listing);
+		}
+	});
 };
 var updatePhelpsMemorial = function() {
   /*
     Phelps Memorial Hospital Center's address is incorrect. Find the listing, update it, and then 
     log the updated document to the console. 
    */
-   
-   Listing.where({name: "Phelps Memorial Hospital Center"}, {$set:{address:'new address'}});
+   Listing.findOneAndUpdate({code: "PHL"},
+		{
+			$set:{
+				address:'102 Phelps Lab, Gainesville, FL 32611', 
+				coordinates:{latitude:29.644718 , longitude:  -82.348871}
+		}},
+		{new:true}, // return the updated listing
+		function(err, listing){
+			console.log("-----------------updatePhelpsMemorial()-----------------");
+			if (err) throw err;
+			console.log(listing);
+		}
+	);
 };
 var retrieveAllListings = function() {
 	/* 
 		Retrieve all listings in the database, and log them to the console. 
 	*/
-
-	 Listing.find({}, function(err, l) {
-	  if (err) throw err;
-	  console.log(l);
-	})
-	.exec(function(){
+	
+	Listing.find({}, function(err, l) {
+		if (err) throw err;
+		console.log(l);
+	}).exec(function(){
+		// exit after all listings have been printed
+		// this *should* take the longest time
 		mongoose.disconnect();
 	});
 };

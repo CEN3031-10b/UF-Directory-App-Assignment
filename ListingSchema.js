@@ -14,8 +14,8 @@ var listingSchema = new Schema({
         required: true,
     },
 	coordinates: {
-		lat: Number,
-		lng: Number
+		latitude: Number,
+		longitude: Number
 	},
 	address: String,
 	updated_at: Date,
@@ -30,12 +30,25 @@ listingSchema.pre('save', function(next) {
 		next(err);
 	}
 	
+	var curr_time = Date.now();
+	
 	if(!this.created_at){
-		this.created_at = Date.now;
+		this.created_at = curr_time;
 	}
 	
-	this.updated_at = Date.now;
+	this.updated_at = curr_time;
 	
+	console.log("-------Saved listing: -------");
+	console.log(this);
+	console.log("-----------------------------\n");
+	
+	next();
+});
+
+// required extra middleware to update "updated_at" when using findOneAndUpdate
+// 'save' is not trigged 
+listingSchema.pre('findOneAndUpdate', function(next) {
+	this.findOneAndUpdate({}, { updated_at: Date.now() });
 	next();
 });
 
