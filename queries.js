@@ -29,7 +29,7 @@ var removeCable = function() {
    */
    
    Listing.findOneAndRemove({code:"CABL"}, function(err, listing){
-	   console.log("-----------------removeCable()-----------------");
+	   console.log("\n-----------------removeCable()-----------------");
 		if(err){
 			console.log(err);
 			return;
@@ -55,7 +55,7 @@ var updatePhelpsMemorial = function() {
 		}},
 		{new:true}, // return the updated listing
 		function(err, listing){
-			console.log("-----------------updatePhelpsMemorial()-----------------");
+			console.log("\n-----------------updatePhelpsMemorial()-----------------");
 			if (err) throw err;
 			console.log(listing);
 		}
@@ -65,9 +65,13 @@ var retrieveAllListings = function() {
 	/* 
 		Retrieve all listings in the database, and log them to the console. 
 	*/
-	
+	var counter = 0;
 	Listing.find({}, function(err, l) {
 		if (err) throw err;
+		counter += 1;
+		if(counter == 1){
+			console.log("\n-----------------retrieveAllListings()-----------------");
+		}
 		console.log(l);
 	}).exec(function(){
 		// exit after all listings have been printed

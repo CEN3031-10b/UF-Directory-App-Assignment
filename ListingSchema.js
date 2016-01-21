@@ -38,10 +38,6 @@ listingSchema.pre('save', function(next) {
 	
 	this.updated_at = curr_time;
 	
-	console.log("-------Saved listing: -------");
-	console.log(this);
-	console.log("-----------------------------\n");
-	
 	next();
 });
 
